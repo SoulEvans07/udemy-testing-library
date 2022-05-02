@@ -2,6 +2,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import { Row } from 'react-bootstrap';
 import { serverUrl } from '../../config';
 import ScoopOption from './ScoopOption';
+import ToppingOption from './ToppingOption';
 import { OptionItem } from './types';
 
 interface OptionsProps {
@@ -21,8 +22,7 @@ export default function Options(props: OptionsProps): ReactElement {
       });
   }, []);
 
-  // const ItemComponent = optionType === 'scoops' ? ScoopOption : null;
-  const ItemComponent = ScoopOption;
+  const ItemComponent = optionType === 'scoops' ? ScoopOption : ToppingOption;
 
   const optionItems = items.map(item => (
     <ItemComponent

@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { mockScoopOptions, mockImgAlts } from '../../../mocks/getScoops';
+import { mockScoopOptions, mockScoopImgAlts } from '../../../mocks/getScoops';
+import { mockToppingImgAlts, mockToppingOptions } from '../../../mocks/getToppings';
 import Options from '../Options';
 
 describe('Options', () => {
@@ -10,6 +11,16 @@ describe('Options', () => {
     expect(scoopImages).toHaveLength(mockScoopOptions.length);
 
     const altText = scoopImages.map(element => element.alt);
-    expect(altText).toEqual(mockImgAlts);
+    expect(altText).toStrictEqual(mockScoopImgAlts);
+  });
+
+  it('displays an image for each toppings option given by the server', async () => {
+    render(<Options optionType="toppings" />);
+
+    const toppingsImages = (await screen.findAllByRole('img', { name: /topping$/i })) as HTMLImageElement[];
+    expect(toppingsImages).toHaveLength(mockToppingOptions.length);
+
+    const altText = toppingsImages.map(element => element.alt);
+    expect(altText).toStrictEqual(mockToppingImgAlts);
   });
 });

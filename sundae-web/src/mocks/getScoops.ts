@@ -10,7 +10,7 @@ export const mockScoopOptions: IceCreamFlavor[] = [
   { name: 'Vanilla', imagePath: '/images/vanilla.png' },
 ];
 
-export const mockImgAlts = mockScoopOptions.map(scoop => scoop.name + ' scoop');
+export const mockScoopImgAlts = mockScoopOptions.map(scoop => scoop.name + ' scoop');
 
 export const getScoops: MockedRestHandler<IceCreamFlavor[]> = (req, res, ctx) => {
   return res(ctx.json<IceCreamFlavor[]>(mockScoopOptions));
