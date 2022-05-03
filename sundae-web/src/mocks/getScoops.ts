@@ -1,4 +1,5 @@
-import { MockedRestHandler } from './types';
+import { rest } from 'msw';
+import { serverUrl } from '../config';
 
 export interface IceCreamFlavor {
   name: string;
@@ -12,6 +13,6 @@ export const mockScoopOptions: IceCreamFlavor[] = [
 
 export const mockScoopImgAlts = mockScoopOptions.map(scoop => scoop.name + ' scoop');
 
-export const getScoops: MockedRestHandler<IceCreamFlavor[]> = (req, res, ctx) => {
+export const getScoops = rest.get<{}, {}, IceCreamFlavor[]>(serverUrl + '/scoops', (_, res, ctx) => {
   return res(ctx.json<IceCreamFlavor[]>(mockScoopOptions));
-};
+});

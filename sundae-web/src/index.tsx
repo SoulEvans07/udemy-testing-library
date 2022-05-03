@@ -8,6 +8,7 @@ import Options from './pages/entry/Options';
 ReactDOM.render(
   <React.StrictMode>
     <Options optionType="scoops" />
+    <Options optionType="toppings" />
     <SummaryForm />
   </React.StrictMode>,
   document.getElementById('root')
