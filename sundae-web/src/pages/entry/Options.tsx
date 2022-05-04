@@ -1,5 +1,6 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { Row } from 'react-bootstrap';
+import AlertBanner from '../../components/AlertBanner/AlertBanner';
 import { serverUrl } from '../../config';
 import ScoopOption from './ScoopOption';
 import ToppingOption from './ToppingOption';
@@ -12,15 +13,18 @@ interface OptionsProps {
 export default function Options(props: OptionsProps): ReactElement {
   const { optionType } = props;
   const [items, setItems] = useState<OptionItem[]>([]);
+  const [error, setError] = useState<string>();
 
   useEffect(() => {
     fetch(serverUrl + '/' + optionType)
       .then(res => res.json())
       .then(options => setItems(options))
       .catch(err => {
-        // TODO: handle error response
+        setError(err.message);
       });
   }, []);
+
+  if (error) return <AlertBanner message={error} variant="danger" />;
 
   const ItemComponent = optionType === 'scoops' ? ScoopOption : ToppingOption;
 
