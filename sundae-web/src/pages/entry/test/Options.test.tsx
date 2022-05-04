@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen } from '../../../utils/testing-library-utils';
 import { mockScoopOptions, mockScoopImgAlts } from '../../../mocks/getScoops';
 import { mockToppingImgAlts, mockToppingOptions } from '../../../mocks/getToppings';
 import Options from '../Options';

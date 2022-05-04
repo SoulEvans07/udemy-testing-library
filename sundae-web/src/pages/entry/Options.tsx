@@ -2,16 +2,21 @@ import { ReactElement, useEffect, useState } from 'react';
 import { Row } from 'react-bootstrap';
 import AlertBanner from '../../components/AlertBanner/AlertBanner';
 import { serverUrl } from '../../config';
+import { pricePerItem } from '../../constants';
+import { useOrderDetails } from '../../contexts/OrderDetails';
+import { OptionType } from '../../types/businessTypes';
+import { formatCurrency } from '../../utils/currency-utils';
 import ScoopOption from './ScoopOption';
 import ToppingOption from './ToppingOption';
 import { OptionItem } from './types';
 
 interface OptionsProps {
-  optionType: 'scoops' | 'toppings';
+  optionType: OptionType;
 }
 
 export default function Options(props: OptionsProps): ReactElement {
   const { optionType } = props;
+  const [orderDetails, updateItemCount] = useOrderDetails();
   const [items, setItems] = useState<OptionItem[]>([]);
   const [error, setError] = useState<string>();
 
@@ -27,17 +32,22 @@ export default function Options(props: OptionsProps): ReactElement {
   if (error) return <AlertBanner message={error} variant="danger" />;
 
   const ItemComponent = optionType === 'scoops' ? ScoopOption : ToppingOption;
+  const title = optionType[0].toUpperCase() + optionType.slice(1).toLowerCase();
+
+  const onItemCountChange = (name: string, value: number) => updateItemCount(name, value, optionType);
 
   const optionItems = items.map(item => (
-    <ItemComponent
-      key={item.name}
-      name={item.name}
-      imagePath={item.imagePath}
-      updateItemCount={function (name: string, value: number): void {
-        throw new Error('Function not implemented.');
-      }}
-    />
+    <ItemComponent key={item.name} name={item.name} imagePath={item.imagePath} updateItemCount={onItemCountChange} />
   ));
 
-  return <Row>{optionItems}</Row>;
+  return (
+    <>
+      <h2>{title}</h2>
+      <p>${pricePerItem[optionType].toFixed(2)} each</p>
+      <p>
+        {title} total: {formatCurrency(orderDetails.totals[optionType])}
+      </p>
+      <Row>{optionItems}</Row>
+    </>
+  );
 }

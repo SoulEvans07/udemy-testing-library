@@ -2,14 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './root.scss';
-import SummaryForm from './pages/summary/SummaryForm';
-import Options from './pages/entry/Options';
+import OrderEntry from './pages/entry/OrderEntry';
+import { Container } from 'react-bootstrap';
+import { OrderDetailsProvider } from './contexts/OrderDetails';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Options optionType="scoops" />
-    <Options optionType="toppings" />
-    <SummaryForm />
+    <Container>
+      <OrderDetailsProvider>
+        <OrderEntry />
+      </OrderDetailsProvider>
+    </Container>
   </React.StrictMode>,
   document.getElementById('root')
 );

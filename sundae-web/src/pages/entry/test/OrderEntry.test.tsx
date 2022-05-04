@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '../../../utils/testing-library-utils';
 import { createEmptyGetHandler } from '../../../mocks/helpers';
 import { server } from '../../../mocks/server';
 import OrderEntry from '../OrderEntry';
