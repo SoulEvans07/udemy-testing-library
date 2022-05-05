@@ -11,8 +11,14 @@ export class Random {
       .join('');
   }
 
-  static choose<T>(array: T[]): T {
-    return array[this.number(array.length - 1)];
+  static choose<T>(array: T[]): T;
+  static choose<T>(array: T[], count: number): T[];
+  static choose<T>(array: T[], count?: number): T | T[] {
+    if (count === undefined) return array[this.number(array.length - 1)];
+    if (count < 1) throw new InvalidArgumentException('count must be bigger than 0');
+
+    const randomized = [...array].sort(() => (Math.random() > 0.5 ? 1 : -1));
+    return randomized.slice(0, count);
   }
 }
 

@@ -6,7 +6,7 @@ describe('SummaryForm', () => {
   let confirmButton: HTMLButtonElement;
 
   beforeEach(async () => {
-    render(<SummaryForm />);
+    render(<SummaryForm setOrderPhase={jest.fn} />);
     termsCheckbox = (await screen.findByRole('checkbox', { name: /terms and conditions/i })) as HTMLInputElement;
     confirmButton = (await screen.findByRole('button', { name: /confirm order/i })) as HTMLButtonElement;
   });

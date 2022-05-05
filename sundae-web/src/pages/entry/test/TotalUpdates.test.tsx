@@ -7,25 +7,15 @@ import { mockToppingOptions } from '../../../mocks/getToppings';
 import { Random } from '../../../utils/Random';
 import Options from '../Options';
 import OrderEntry from '../OrderEntry';
+import { setScoopTo, toggleTopping } from './helpers';
 
 describe('TotalUpdates', () => {
-  const setScoopTo = async (scoopName: string, count: number) => {
-    const scoopInput = await screen.findByRole('spinbutton', { name: scoopName });
-    userEvent.clear(scoopInput);
-    userEvent.type(scoopInput, String(count));
-  };
-
-  const toggleTopping = async (toppingName: string) => {
-    const toppingCheckbox = await screen.findByRole('checkbox', { name: toppingName });
-    userEvent.click(toppingCheckbox);
-  };
-
   describe('SubTotals', () => {
     test('update scoop subtotal when scoops change', async () => {
       render(<Options optionType="scoops" />);
 
       let totalCost = 0;
-      const scoopsSubTotal = screen.getByText('Scoops total: $', { exact: false });
+      const scoopsSubTotal = screen.getByText('Scoops total:', { exact: false });
       expect(scoopsSubTotal).toHaveTextContent(formatCurrency(totalCost));
 
       for (let i = 0; i < mockScoopOptions.length; i++) {
@@ -40,7 +30,7 @@ describe('TotalUpdates', () => {
     test('update toppings subtotal when toppings change', async () => {
       render(<Options optionType="toppings" />);
 
-      const toppingsSubTotal = screen.getByText('Toppings total: $', { exact: false });
+      const toppingsSubTotal = screen.getByText('Toppings total:', { exact: false });
       expect(toppingsSubTotal).toHaveTextContent('$0.00');
 
       for (let i = 0; i < mockToppingOptions.length; i++) {
@@ -62,7 +52,7 @@ describe('TotalUpdates', () => {
     let grandTotal: HTMLHeadingElement;
 
     beforeEach(() => {
-      render(<OrderEntry />);
+      render(<OrderEntry setOrderPhase={jest.fn} />);
       grandTotal = screen.getByRole('heading', { name: /grand total: /i }) as HTMLHeadingElement;
     });
 

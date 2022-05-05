@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { Form, Button, Popover, OverlayTrigger, PopoverBody } from 'react-bootstrap';
+import { SetOrderPhaseAction } from '../../types/businessTypes';
 
-export default function SummaryForm() {
+interface SummaryFormProps {
+  setOrderPhase: SetOrderPhaseAction;
+}
+
+export default function SummaryForm(props: SummaryFormProps) {
+  const { setOrderPhase } = props;
   const [tcChecked, setTcChecked] = useState(false);
 
   const popover = (
@@ -14,13 +20,18 @@ export default function SummaryForm() {
     <span>
       I agree to
       <OverlayTrigger placement="right" overlay={popover}>
-        <span style={{ color: 'blue' }}> Terms and Conditions</span>
+        <span className="terms-and-conditions"> Terms and Conditions</span>
       </OverlayTrigger>
     </span>
   );
 
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    setOrderPhase('completed');
+  };
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit} className="summary-form">
       <Form.Group controlId="terms-and-conditions">
         <Form.Check
           type="checkbox"
